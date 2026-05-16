@@ -27,6 +27,9 @@ jobs:
           java-version: '21'
           cache: maven
 
+      - name: Prepare Maven wrapper
+        run: chmod +x ./mvnw
+
       - name: Run tests
         run: ./mvnw test
 
@@ -46,6 +49,9 @@ jobs:
           distribution: temurin
           java-version: '21'
           cache: maven
+
+      - name: Prepare Maven wrapper
+        run: chmod +x ./mvnw
 
       - name: Build package
         run: ./mvnw -DskipTests package
