@@ -2,7 +2,6 @@ package com.example.demo.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -35,13 +34,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/attractions/**", "/schedules/**").hasAnyRole("USER", "MANAGER", "ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
-                        .requestMatchers("/maintenances/**", "/operations/maintenances/**").hasAnyRole("MANAGER", "ADMIN")
-                        .requestMatchers("/attractions/**", "/schedules/**").hasAnyRole("MANAGER", "ADMIN")
-                        .requestMatchers("/operations/visitors/**").hasAnyRole("MANAGER", "ADMIN")
-                        .requestMatchers("/visitors/**", "/tickets/**", "/operations/tickets/**").hasAnyRole("USER", "MANAGER", "ADMIN")
+                        .requestMatchers("/auth/register", "/auth/login", "/auth/refresh").permitAll()
+                        .requestMatchers("/access/admin").hasRole("ADMIN")
+                        .requestMatchers("/access/manager").hasAnyRole("MANAGER", "ADMIN")
+                        .requestMatchers("/access/user").hasAnyRole("USER", "MANAGER", "ADMIN")
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())
