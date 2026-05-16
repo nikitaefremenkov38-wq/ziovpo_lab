@@ -4,15 +4,15 @@ services:
     container_name: parkdb-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_DB: parkdb
-      POSTGRES_USER: nikitos
-      POSTGRES_PASSWORD: nikita3
+      POSTGRES_DB: ${DB_NAME:-parkdb}
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
     ports:
       - "5434:5432"
     volumes:
       - parkdb_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres} -d parkdb"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres} -d ${DB_NAME:-parkdb}"]
       interval: 10s
       timeout: 5s
       retries: 5
